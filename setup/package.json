@@ -4,10 +4,14 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start":"ts-node bmiCalculator.ts",
+        "start": "npm run calculateExercises; npm run  calculateBmi",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "calculateExercises" : "ts-node exerciseCalculator.ts"
+        "calculateExercises": "ts-node exerciseCalculator.ts 2 2 3 4 0 4 5 0",
+        "calculateBmi": "ts-node bmiCalculator.ts 175 70"
     },
     "author": "",
-    "license": "ISC"
+    "license": "ISC",
+    "devDependencies": {
+        "@types/node": "^14.6.4"
+    }
 }

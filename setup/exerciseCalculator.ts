@@ -1,3 +1,7 @@
+interface Input {
+    days : number[],
+    target : number
+}
 interface Report {
     periodLength : number,
     trainingDays : number,
@@ -8,27 +12,55 @@ interface Report {
     average : number
 }
 
-function calculateExercises (input : number[], target: number) : Report {
-    const periodLength = input.length;
-    const trainingDays = input.filter( d => d !== 0).length;
-    const average = input.reduce((sum, day) => sum + day, 0) / periodLength;
-     const rating =   Math.round(average) < target ? 1
-                    : Math.round(average) === target ? 2
-                    : 3
+function calculateExercises (input: Input) : Report {
+    const periodLength = input.days.length;
+    const trainingDays = input.days.filter( d => d !== 0).length;
+    const average = input.days.reduce((sum, day) => sum + day, 0) / periodLength;
+    const rating =   Math.round(average) < input.target ? 1
+        : Math.round(average) === input.target ? 2 
+        : 3;
     const ratingDescription = ['get good lmao', 'not bad', 'nice'][rating - 1]
-    const success = rating >= target;
+    const success = rating >= input.target;
 
 
-    return {
-        periodLength,
-        trainingDays,
-        success,
-        rating,
-        ratingDescription,
-        target,
-        average,
-    }
+        return {
+            periodLength,
+            trainingDays,
+            success,
+            rating,
+            ratingDescription,
+            target: input.target,
+            average,
+        }
 }
 
+function parseArgs():Input {
+    const args = process.argv
+    console.log(args)
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+    if (args.length < 4)
+        throw new Error('not enough arguments')
+
+    const target = Number(args[2])
+    if (isNaN(target)) throw new Error('target argument not a number')
+
+        let days = []
+
+        for (let i=3; i < args.length; i++) {
+            const num = Number(args[i])
+            if (isNaN(num)) throw new Error('day argument not a number')
+                days.push(num) 
+        }
+
+        return {
+            target,
+            days
+        }
+}
+
+function run () {
+    const input = parseArgs() 
+    console.log(calculateExercises(input))
+}
+
+run()

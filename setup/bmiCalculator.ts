@@ -1,4 +1,10 @@
-const calculateBmi = (height: number, weight:number) :string => {
+interface Input {
+    height: number,
+    weight:number
+}
+
+
+function calculateBmi ({height, weight}:Input) :string {
     let bmi = 0.0
     if (height === 0){
         throw new Error('height can not be zero');
@@ -20,4 +26,27 @@ const calculateBmi = (height: number, weight:number) :string => {
 
 }
 
-console.log(calculateBmi(175,65))
+function parseArgs():Input {
+    const args = process.argv;
+    console.log(args)
+
+    if (args.length < 4) throw new Error('not enough args');
+
+    const height = Number(args[2]);
+    if (isNaN(height)) throw new Error('height not a number');
+
+    const weight = Number(args[3]);
+    if (isNaN(weight)) throw new Error('weight not a number');
+
+        return {
+            height,
+            weight
+        }
+}
+
+function run() {
+    const input = parseArgs()
+    console.log(calculateBmi(input))
+}
+
+run()
