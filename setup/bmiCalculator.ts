@@ -4,7 +4,7 @@ interface Input {
 }
 
 
-function calculateBmi ({height, weight}:Input) :string {
+export default function calculateBmi ({height, weight}:Input) :string {
     let bmi = 0.0
     if (height === 0){
         throw new Error('height can not be zero');
@@ -12,6 +12,9 @@ function calculateBmi ({height, weight}:Input) :string {
     else {
         bmi =  weight/(height/100)**2;
     }
+
+    if (isNaN(height)) throw new Error('height not a number');
+    if (isNaN(weight)) throw new Error('weight not a number');
 
     console.log(bmi);
 
@@ -24,19 +27,16 @@ function calculateBmi ({height, weight}:Input) :string {
     if (bmi >= 35 && bmi < 40)      return "Obese Class II (Severely obese)";
     if (bmi >= 40)                  return "Obese Class III (Very severely obese)";
 
+    return 'something went wrong'
 }
 
-function parseArgs():Input {
-    const args = process.argv;
+function parseArgs(args: string[]):Input {
     console.log(args)
 
     if (args.length < 4) throw new Error('not enough args');
 
     const height = Number(args[2]);
-    if (isNaN(height)) throw new Error('height not a number');
-
     const weight = Number(args[3]);
-    if (isNaN(weight)) throw new Error('weight not a number');
 
         return {
             height,
@@ -44,9 +44,7 @@ function parseArgs():Input {
         }
 }
 
-function run() {
-    const input = parseArgs()
+if (!module.parent) {
+    const input = parseArgs(process.argv)
     console.log(calculateBmi(input))
 }
-
-run()

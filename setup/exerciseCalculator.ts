@@ -34,8 +34,7 @@ function calculateExercises (input: Input) : Report {
         }
 }
 
-function parseArgs():Input {
-    const args = process.argv
+function parseArgs(args: string[]):Input {
     console.log(args)
 
     if (args.length < 4)
@@ -58,9 +57,7 @@ function parseArgs():Input {
         }
 }
 
-function run () {
-    const input = parseArgs() 
+if (!module.parent) {
+    const input = parseArgs(process.argv)
     console.log(calculateExercises(input))
 }
-
-run()
