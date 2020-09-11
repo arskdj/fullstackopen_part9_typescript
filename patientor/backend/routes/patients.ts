@@ -1,10 +1,12 @@
-import express from 'express'
-import patients from '../data/patients.json'
+import express from 'express';
+import service from '../services/patientService';
+import {PatientNonSensitive} from '../types';
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-    res.send(patients)
-})
+    const data:PatientNonSensitive[] = service.getNonSensitive();
+    res.send(data);
+});
 
-export default router
+export default router;
