@@ -9,4 +9,12 @@ router.get('/', (_req, res) => {
     res.send(data);
 });
 
+router.post('/', (req, res) => {
+    const newPatient = req.body; 
+    console.log(newPatient)
+    service.add(newPatient);
+    res.send(newPatient);
+});
+
+
 export default router;
