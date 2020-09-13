@@ -1,17 +1,25 @@
 import express from 'express';
 import service from '../services/patientService';
-import {PatientNonSensitive, Patient} from '../types';
+import {PublicPatient, Patient} from '../types';
 
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-    const data:PatientNonSensitive[] = service.getNonSensitive();
+    const data: PublicPatient[] = service.getNonSensitive();
     res.send(data);
 });
 
 router.post('/', (req, res) => {
     const newPatient:Patient = service.add(req.body);
     res.send(newPatient);
+});
+
+router.get('/:id', (req, res) => {
+    const patient: Patient|undefined = service.getById(req.params.id);
+    if (patient)
+        res.send(patient);
+    else 
+        res.status(404).end();
 });
 
 export default router;
