@@ -18,3 +18,11 @@ export interface Patient {
   ssn?: string;
   dateOfBirth?: string;
 }
+
+export interface PatientPageProps {
+  patient: Patient;
+}
+
+export interface MatchParams {
+  id: string;
+}

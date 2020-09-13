@@ -5,7 +5,7 @@ import {PublicPatient, Patient} from '../types';
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-    const data: PublicPatient[] = service.getNonSensitive();
+    const data: PublicPatient[] = service.getAll();
     res.send(data);
 });
 
