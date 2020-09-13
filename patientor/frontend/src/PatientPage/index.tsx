@@ -14,7 +14,6 @@ const PatientPage: React.FC<PatientPageProps> = (props) => {
             <h1>{patient.name} </h1>
             <p> ssn: {patient.ssn} </p>
             <p> occupation: {patient.occupation} </p>
-
             <h2>entries</h2>
             { patient.entries.map( e => <Entry key={e.id} entry={e} />) }
         </>);
