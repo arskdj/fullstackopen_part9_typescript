@@ -33,8 +33,8 @@ const PatientListPage: React.FC = () => {
       dispatch({ type: "ADD_PATIENT", payload: newPatient });
       closeModal();
     } catch (e) {
-      console.error(e.response.error);
-      setError(e.response.error);
+      console.error(e);
+      setError(e);
     }
   };
 

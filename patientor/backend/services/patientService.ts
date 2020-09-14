@@ -7,19 +7,14 @@ import {
 } from '../parse';
 
 const toNewPatient = (obj: any): Patient => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const patient = {
-        ...obj,
-        id: uuid()
-    };
-    
-    return parsePatient(patient);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    obj.id = uuid();
+    return parsePatient(obj);
 };
 
 const toNewEntry = (obj: any): Entry => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     obj.id = uuid();
-    console.log('parsing entry', obj);
     return parseEntry(obj);
 };
 
@@ -33,9 +28,15 @@ const addPatient = (input:PatientInput): Patient => {
 
 const addEntry = (pid: string, entry: Entry): Entry|undefined => {
     const patient: Patient|undefined = getById(pid);
-    const newEntry: Entry = toNewEntry(entry);
-    patient?.entries.push(newEntry);
-    return newEntry;
+    const newEntry: Entry|undefined = toNewEntry(entry);
+    if (patient && newEntry ){
+        patient.entries.push(newEntry);
+        return newEntry;
+    }else{
+        console.log('patient', patient);
+        console.log('entry', entry);
+        return undefined;
+    }
 };
 
 const getNonSensitive = (): PublicPatient[] => {

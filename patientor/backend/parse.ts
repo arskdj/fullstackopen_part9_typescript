@@ -135,6 +135,12 @@ const parseEntry = (obj: any): Entry|undefined => {
 
 };
 
+const parseEntries = (entries: any[]): Entry[] => {
+    if (!entries || entries.length===0) return [];
+
+    return entries.map((e: Entry) => parseEntry(e));
+};
+
 const parsePatient = (obj:any): Patient => {
     return {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -150,7 +156,7 @@ const parsePatient = (obj:any): Patient => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         gender: parseGender(obj.gender),
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        entries: obj?.entries?.map((e: Entry) => parseEntry(e))
+        entries: parseEntries(obj.entries)
     };
 };
 
