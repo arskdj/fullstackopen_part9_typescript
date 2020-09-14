@@ -1,14 +1,14 @@
 import express from 'express';
 import service from '../services/patientService';
-import { PublicPatient, Patient } from '../types';
+import { PublicPatient, Patient, Entry } from '../types';
 
 const router = express.Router();
 
 router.post('/:id/entries', (req, res) => {
-    console.log('post entry');
-    const patient: Patient | undefined = service.addEntry(req.params.id, req.body);
-    if (patient) {
-        res.send(patient);
+    const entry: Entry | undefined = service.addEntry(req.params.id, req.body);
+    if (entry) {
+        console.log('post entry', entry);
+        res.send(entry);
     } else {
         res.status(404).end();
     }

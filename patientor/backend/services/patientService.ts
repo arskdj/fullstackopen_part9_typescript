@@ -88,10 +88,10 @@ const addPatient = (input:PatientInput): Patient => {
     return patient;
 };
 
-const addEntry = (pid: string, entry: Entry): Patient|undefined => {
+const addEntry = (pid: string, entry: Entry): Entry|undefined => {
     const patient: Patient|undefined = getById(pid);
     patient?.entries.push(entry);
-    return patient;
+    return entry;
 };
 
 const getNonSensitive = (): PublicPatient[] => {
