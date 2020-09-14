@@ -8,7 +8,7 @@ const EntryDetails: React.FC<EntryPropTypes> = (props) => {
 
     const [{ diagnoses },] = useStateValue();
 
-    const assertNever = (value: never): never => {
+    const assertNever = (value: any): never => {
         throw new Error(
             `Unhandled discriminated union member: ${JSON.stringify(value)}`
         );

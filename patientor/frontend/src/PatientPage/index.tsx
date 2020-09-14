@@ -46,7 +46,7 @@ const PatientPage: React.FC<PatientPageProps> = (props) => {
         <p> ssn: {patient.ssn} </p>
         <p> occupation: {patient.occupation} </p>
         <h2>entries</h2>
-        { patient.entries.map(e => <EntryDetails key={e.id} entry={e} />)}
+        { patient?.entries?.map(e => <EntryDetails key={e.id} entry={e} />)}
 
         <AddEntryModal
             modalOpen={modalOpen}

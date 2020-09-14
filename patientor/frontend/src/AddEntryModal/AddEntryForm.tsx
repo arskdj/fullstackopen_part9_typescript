@@ -5,13 +5,13 @@ import { useStateValue } from '../state';
 import { HealthCheckEntry, OccupationalHealthcareEntry, HospitalEntry } from '../types';
 import { Grid, Button } from 'semantic-ui-react';
 import SelectTypeField, { typeOptions } from './SelectTypeField';
-import { Type } from '../types';
+import { Type, HealthCheckRating } from '../types';
 
 export type EntryFormValues =
     Omit<HealthCheckEntry, 'id'>
     | Omit<HospitalEntry, 'id'>
     | Omit<OccupationalHealthcareEntry, 'id'>
-;
+    ;
 
 interface Props {
     onSubmit: (values: EntryFormValues) => void;
@@ -24,23 +24,22 @@ const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
     return (
         <Formik
             initialValues={{
-                type: "HealthCheck",
+                type: Type.HealthCheck,
                 date: "",
                 specialist: "",
                 description: "",
-                healthCheckRating: 0,
                 diagnosisCodes: [],
-
+                healthCheckRating: HealthCheckRating.Healthy,
             }}
             onSubmit={onSubmit}
             validate={values => {
                 const requiredError = "Field is required";
                 const errors: { [field: string]: string } = {};
 
-                if (!values.date)        errors.date = requiredError;
-                if (!values.specialist)  errors.specialist = requiredError;
+                if (!values.date) errors.date = requiredError;
+                if (!values.specialist) errors.specialist = requiredError;
                 if (!values.description) errors.description = requiredError;
-                if (!values.type)        errors.type = requiredError;
+                if (!values.type) errors.type = requiredError;
 
                 if (values.diagnosisCodes) {
                     values.diagnosisCodes.forEach(code => {
@@ -91,9 +90,9 @@ const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
                         />
 
                         <Field
-                            label="Date Of Birth"
+                            label="Date"
                             placeholder="YYYY-MM-DD"
-                            name="dateOfBirth"
+                            name="date"
                             component={TextField}
                         />
 
