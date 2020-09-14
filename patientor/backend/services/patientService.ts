@@ -1,5 +1,5 @@
 import patients from '../data/patients';
-import { Gender, Patient, PublicPatient, PatientInput } from '../types';
+import { Gender, Patient, PublicPatient, PatientInput, Entry } from '../types';
 import { v1 as uuid } from 'uuid';
 
 const toNewPatient = (object: any): Patient => {
@@ -51,6 +51,24 @@ const toNewPatient = (object: any): Patient => {
         return gender;
     };
 
+    const assertNever = (value: never): never => {
+        throw new Error(
+            `Unhandled discriminated union member: ${JSON.stringify(value)}`
+        );
+    };
+
+    const parseEntry = (entry: Entry): Entry => {
+        switch (entry.type) {
+            case 'HealthCheck':
+            case 'OccupationalHealthcare':
+            case 'Hospital':
+                break;
+            default:
+                assertNever(entry);
+        }
+        return entry;
+    };
+
     return {
         name : parseName(object.name),
         ssn : parseSsn(object.ssn),
@@ -58,15 +76,21 @@ const toNewPatient = (object: any): Patient => {
         gender : parseGender(object.gender),
         id : uuid(),
         occupation : parseOccupation(object.occupation),
-        entries: []
+        entries: object.entries.map( (e: Entry) => parseEntry(e))
     };
 };
 
 const getAll = ():Patient[] => patients;
 
-const add = (input:PatientInput):Patient => {
+const addPatient = (input:PatientInput): Patient => {
     const patient = toNewPatient(input);
     patients.push(patient);
+    return patient;
+};
+
+const addEntry = (pid: string, entry: Entry): Patient|undefined => {
+    const patient: Patient|undefined = getById(pid);
+    patient?.entries.push(entry);
     return patient;
 };
 
@@ -82,8 +106,9 @@ const getById = (id: string): Patient | undefined => {
 };
 
 export default {
-    add,
+    add: addPatient,
     getAll,
     getNonSensitive,
-    getById
+    getById,
+    addEntry
 };
