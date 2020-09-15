@@ -50,6 +50,7 @@ const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
                         errors.discharge = requiredError;
                 }
 
+                return errors;
             }}
         >
             {({ isValid, dirty, setFieldValue, setFieldTouched }) => {

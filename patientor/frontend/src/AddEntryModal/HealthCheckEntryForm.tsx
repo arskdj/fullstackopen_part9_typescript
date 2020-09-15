@@ -43,7 +43,8 @@ const HealthCheckEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
                 }
 
                 if (!values.healthCheckRating) errors.healthCheckRating = requiredError;
-
+                
+                return errors;
             }}
         >
             {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
