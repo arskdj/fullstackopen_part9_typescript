@@ -2,23 +2,18 @@ import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import { DiagnosisSelection, NumberField, TextField } from '../AddPatientModal/FormField';
 import { useStateValue } from '../state';
-import { HealthCheckEntry, OccupationalHealthcareEntry, HospitalEntry } from '../types';
+import { HealthCheckEntry } from '../types';
 import { Grid, Button } from 'semantic-ui-react';
-import SelectTypeField, { typeOptions } from './SelectTypeField';
 import { Type, HealthCheckRating } from '../types';
 
-export type EntryFormValues =
-    Omit<HealthCheckEntry, 'id'>
-    | Omit<HospitalEntry, 'id'>
-    | Omit<OccupationalHealthcareEntry, 'id'>
-    ;
+export type HealthCheckEntryFormValues = Omit<HealthCheckEntry, 'id'>;
 
 interface Props {
-    onSubmit: (values: EntryFormValues) => void;
+    onSubmit: (values: HealthCheckEntryFormValues) => void;
     onCancel: () => void;
 }
 
-const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
+const HealthCheckEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
     const [{ diagnoses }] = useStateValue();
 
     return (
@@ -47,39 +42,18 @@ const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
                     });
                 }
 
-                switch (values.type) {
-                    case Type.HealthCheck: {
-                        if (!values.healthCheckRating) errors.healthCheckRating = requiredError;
-                        break;
-                    }
-                    case Type.OccupationalHealthcare: {
-                        if (!values.employerName) errors.employerName = requiredError;
-                        if (values?.sickLeave) {
-                            if (!values.sickLeave.endDate || !values.sickLeave.startDate)
-                                errors.sickLeave = requiredError;
-                        }
-                        break;
-                    }
-                    case Type.Hospital: {
-                        if (values?.discharge) {
-                            if (!values.discharge.criteria || !values.discharge.date)
-                                errors.discharge = requiredError;
-                        }
-                        break;
-                    }
-                    default:
-                        throw new Error(`Unhandled discriminated union member: ${JSON.stringify(values)}`);
-                }
+                if (!values.healthCheckRating) errors.healthCheckRating = requiredError;
+
             }}
         >
             {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
 
                 return (
                     <Form className="form ui">
-                        <SelectTypeField
-                            label="Type"
-                            name="type"
-                            options={typeOptions}
+                        <DiagnosisSelection
+                            setFieldValue={setFieldValue}
+                            setFieldTouched={setFieldTouched}
+                            diagnoses={Object.values(diagnoses)}
                         />
 
                         <Field
@@ -101,12 +75,6 @@ const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
                             placeholder="Specialist"
                             name="specialist"
                             component={TextField}
-                        />
-
-                        <DiagnosisSelection
-                            setFieldValue={setFieldValue}
-                            setFieldTouched={setFieldTouched}
-                            diagnoses={Object.values(diagnoses)}
                         />
 
                         <Field
@@ -141,4 +109,4 @@ const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
     );
 };
 
-export default AddEntryForm;
+export default HealthCheckEntryForm;
